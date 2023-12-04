@@ -60,7 +60,8 @@ void AdvancePC() {
 // Input: Khong gian dia chi User(int) - gioi han cua buffer(int)
 // Output: Bo nho dem Buffer(char*)
 // Chuc nang: Sao chep vung nho User sang vung nho System
-char *User2System(int virtAddr, int limit) {
+char *User2System(int virtAddr, int limit) 
+{
     int i; // chi so index
     int oneChar;
     char *kernelBuf = NULL;
@@ -82,7 +83,8 @@ char *User2System(int virtAddr, int limit) {
 // Input: Khong gian vung nho User(int) - gioi han cua buffer(int) - bo nho dem
 // buffer(char*) Output: So byte da sao chep(int) Chuc nang: Sao chep vung nho
 // System sang vung nho User
-int System2User(int virtAddr, int len, char *buffer) {
+int System2User(int virtAddr, int len, char *buffer) 
+{
     if (len < 0)
         return -1;
     if (len == 0)
@@ -106,6 +108,23 @@ void reverse(char src[], int start, int end) {
         start++;
         end--;
     }
+}
+
+//Doc chuoi ki tu nhap tu ban phim:
+void ReadString(char *buffer, int length)
+{
+     synchcons->Read(buffer, length); //dung synchcons de doc du lieu tu nguoi dung
+     int addr;
+     addr = machine->ReadRegister(4); //doc thanh ghi thu 4
+     System2User(addr, length, buffer); //chuyen du lieu tu system den user
+}
+
+//In chuoi ki tu:
+void PrintString(char* buffer)
+{
+     int length = 0;
+     while (buffer[length] != '\0') length++; //kiem tra so luong ki tu chuoi, den ki tu \0 thi dung
+     synchcons->Write(buffer, length + 1); //in ra man hinh console
 }
 
 void ExceptionHandler(ExceptionType which) {
@@ -246,6 +265,25 @@ void ExceptionHandler(ExceptionType which) {
             AdvancePC();
             break;
         }
+	case SC_ReadString: {
+	    int addr = machine->ReadRegister(4);  // doc dia chi cua chuoi
+    	    int length = machine->ReadRegister(5);  // doc do dai cua chuoi
+            if (length > MAX_READ_STRING_LENGTH || length <= 0) {  //kiem tra do dai cua chuoi
+                DEBUG(dbgSys, "String length exceeds " << MAX_READ_STRING_LENGTH);
+                SC_Halt();
+            }
+    	    char* buffer = User2System(addr, length)
+	    ReadString(buffer, length)
+            delete[] buffer;
+ 	}
+	break;
+	case SC_PrintString: {
+	    int addr = machine->ReadRegister(4);  // doc dia chi cua chuoi
+    	    char* buffer = User2System(addr, MAX_READ_STRING_LENGTH)
+	    PrintString(buffer)
+	    AdvancePC();
+            delete[] buffer;
+ 	}
         break;
     default:
         break;
