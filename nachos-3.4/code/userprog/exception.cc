@@ -25,7 +25,7 @@
 #include "syscall.h"
 #include "system.h"
 #include <cstring>
-
+#define MAX_READ_STRING_LENGTH 255;
 //----------------------------------------------------------------------
 // ExceptionHandler
 // 	Entry point into the Nachos kernel.  Called when a user program
