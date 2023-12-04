@@ -16,6 +16,7 @@ int main() {
 //     PrintString(
 //         "\t- The program will print out the sorted array and then exit\n");
 
-   //PrintInt(ReadInt());
+
+    PrintInt(ReadInt());
     Halt();
 }
