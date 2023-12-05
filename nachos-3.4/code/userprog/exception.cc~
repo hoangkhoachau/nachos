@@ -260,6 +260,20 @@ void ExceptionHandler(ExceptionType which) {
             AdvancePC();
         } break;
 
+	case SC_ReadChar: {
+
+	    char c;
+	    gSynchConsole->Read(&c, 1);
+	    machine->WriteRegister(2, c);  // doc dia chi cua chuoi
+	    AdvancePC();
+ 	}
+	break;
+	case SC_PrintChar: {
+	    char c = machine->ReadRegister(4);  // doc dia chi cua chuoi
+	    gSynchConsole->Write(c, 1);
+	    AdvancePC();
+ 	}
+        break;
 
 	case SC_ReadString: {
 	    int addr = machine->ReadRegister(4);  // doc dia chi cua chuoi

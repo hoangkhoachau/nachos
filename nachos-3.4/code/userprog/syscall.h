@@ -134,6 +134,9 @@ void Yield();
 int ReadInt();
 void PrintInt(int number);
 
+char ReadChar();
+void PrintChar(char c);
+
 void ReadString(char* buffer, int length);
 void PrintString(char* buffer);
 
