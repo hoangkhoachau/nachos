@@ -62,7 +62,7 @@
   ![int](.\int.png)
   ### 3.5 Cài đặt system call *void PrintInt(int number)*
   ### 3.6 Cài đặt system call *char ReadChar()*
-  ![char_1](.\Anh\char_1.png)
+  ![char_1](char_1.png)
   ![char_2](.\Anh\char_2.png)
   ### 3.7 Cài đặt system call *void PrintChar(char character)*
   ### 3.8 Cài đặt system call *void ReadString(char[] buffer, int length)*
