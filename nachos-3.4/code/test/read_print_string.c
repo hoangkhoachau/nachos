@@ -2,9 +2,12 @@
 #include "syscall.h"
 
 int main() {
-	char* str;
+	char* str;	
+	int num;
+	PrintString("Enter string length: ");
+	num = ReadInt();
     	PrintString("Enter any string: ");
-    	ReadString(str, 255);
+    	ReadString(str, num);
 	PrintString("Your string: ");
     	PrintString(str);
 	PrintString("\n");
