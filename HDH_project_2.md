@@ -19,7 +19,7 @@
        
 ### 2.2 Giao tiếp giữa HĐH và chương trình người dùng
 #### 2.2.1 Mô hình
-![x](.\Anh\Anh2.png)
+![x](.\image\Anh2.png)
 #### 2.2.2 Giao tiếp giữa hệ điều hành và chương trình người dùng
 - Cũng tương tự như mô hình giao tiếp chung giữa HĐH và chương trình người dùng ở trên, mỗi chương trình trong hệ thống phải có các thông tin cục bộ của nó, bao gồm program counters, registers, stack pointers, và file system handler. Mặc dù user program truy cập các thông tin cục bộ của nó, nhưng HĐH điều khiển các truy cập này, HĐH đảm bảo các yêu cầu từ user program tới kernel không làm cho HĐH sụp đổ. Việc chuyển quyền điều khiển từ user mode thành system mode được thực hiện thông qua system calls, softwave interrupt/trap. Trước khi gọi một lệnh trong hệ thống thì các tham số truyền vào cần thiết phải được nạp vào các thanh ghi của CPU. Để chuyển một biến mang giá trị, tiến trình chỉ việc ghi giá trị vào thanh ghi. Để chuyển một biến tham chiếu, thì giá trị lưu trong thanh ghi được xem như là “user space pointer”. Bởi vì user space pointer không có y nghĩa đối với kernel, mà chúng ta cần là chuyển nội dung từ user space vào kernel sao cho ta có thể xử lý dữ liệu này. Khi trả thông tin từ system về user space, thì các giá trị phải đặt trong các thanh ghi của CPU
 - Tuy nhiên Nachos là một HĐH nhỏ gọn nhằm mục đích phục vụ cho việc
@@ -59,7 +59,7 @@
   ### 3.2 Viết lại cấu trúc điều khiển của chương trình
   ### 3.3 
   ### 3.4 Cài đặt system call *int ReadInt()*
-  ![int](.\Anh\int.png)
+  ![int](.\image\int.png)
   ### 3.5 Cài đặt system call *void PrintInt(int number)*
   ### 3.6 Cài đặt system call *char ReadChar()*
   ![char_1](.\Anh\char_1.png)
