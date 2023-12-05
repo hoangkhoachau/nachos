@@ -158,8 +158,6 @@ void ExceptionHandler(ExceptionType which) {
 
             // empty input
             if (size == 0) {
-                DEBUG('a', "\n Invalid number.");
-                printf("\n\n Invalid number.");
 
                 machine->WriteRegister(2, 0);
                 AdvancePC();
@@ -187,9 +185,6 @@ void ExceptionHandler(ExceptionType which) {
                 if (buf[i] == '.') { // valid: 1.0000
                     for (int j = i + 1; j < size; ++j) {
                         if (buf[j] != '0') { // Invalid: 1.0002
-                            DEBUG('a', "\n Invalid number.");
-                            printf("\n\n Invalid number.");
-
                             machine->WriteRegister(2, 0);
                             AdvancePC();
                             delete buf;
@@ -198,9 +193,6 @@ void ExceptionHandler(ExceptionType which) {
                     }
                     break;
                 } else if (buf[i] < '0' || buf[i] > '9') { // Invalid: 12a1
-                    DEBUG('a', "\n Invalid number.");
-                    printf("\n\n Invalid number.");
-
                     machine->WriteRegister(2, 0);
                     AdvancePC();
                     delete buf;

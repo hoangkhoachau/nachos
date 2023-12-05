@@ -270,7 +270,7 @@ void ExceptionHandler(ExceptionType which) {
 	break;
 	case SC_PrintChar: {
 	    char c = machine->ReadRegister(4);  // doc dia chi cua chuoi
-	    gSynchConsole->Write(c, 1);
+	    gSynchConsole->Write(&c, 1);
 	    AdvancePC();
  	}
         break;
