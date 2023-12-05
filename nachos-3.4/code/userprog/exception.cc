@@ -109,7 +109,8 @@ void reverse(char src[], int start, int end) {
 
 // Doc chuoi ki tu:
 void readString(char *buffer, int length) {
-    gSynchConsole->Read(buffer, length); // dung synchcons de doc du lieu tu nguoi dung
+    gSynchConsole->Read(buffer,
+                        length); // dung synchcons de doc du lieu tu nguoi dung
     int addr;
     addr = machine->ReadRegister(4);   // doc thanh ghi thu 4
     System2User(addr, length, buffer); // chuyen du lieu tu system den user
@@ -119,7 +120,7 @@ void readString(char *buffer, int length) {
 void printString(char *buffer) {
     int length = 0;
     while (buffer[length] != '\0')
-        length++;                             // kiem tra so luong ki tu chuoi, den ki tu \0 thi dung
+        length++; // kiem tra so luong ki tu chuoi, den ki tu \0 thi dung
     gSynchConsole->Write(buffer, length + 1); // in ra man hinh console
 }
 
@@ -214,7 +215,7 @@ void ExceptionHandler(ExceptionType which) {
             machine->WriteRegister(2, ans);
             AdvancePC();
             delete buf;
-
+            return;
         } break;
 
         case SC_PrintInt: {
@@ -264,10 +265,12 @@ void ExceptionHandler(ExceptionType which) {
         } break;
 
         case SC_ReadString: {
-            int addr = machine->ReadRegister(4);                  // doc dia chi cua chuoi
-            int length = machine->ReadRegister(5);                // doc do dai cua chuoi
-            if (length > MAX_READ_STRING_LENGTH || length <= 0) { // kiem tra do dai cua chuoi
-                /* DEBUG(dbgSys, "String length exceeds " << MAX_READ_STRING_LENGTH); */
+            int addr = machine->ReadRegister(4);   // doc dia chi cua chuoi
+            int length = machine->ReadRegister(5); // doc do dai cua chuoi
+            if (length > MAX_READ_STRING_LENGTH ||
+                length <= 0) { // kiem tra do dai cua chuoi
+                /* DEBUG(dbgSys, "String length exceeds " <<
+                 * MAX_READ_STRING_LENGTH); */
                 // printf("OKK");
                 interrupt->Halt();
             }
