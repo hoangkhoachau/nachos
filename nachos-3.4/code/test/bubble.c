@@ -1,5 +1,3 @@
-
-
 #include "syscall.h"
 
 
@@ -26,7 +24,7 @@ int main() {
     PrintString("Array:\n");
     for (i = 0; i < n; i++) {
         PrintInt(A[i]);
-        //PrintChar('\t');
+        PrintChar('\t');
     }
 
     for (i = 0; i < n; i++) {
