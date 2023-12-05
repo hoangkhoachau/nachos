@@ -5,8 +5,8 @@ int main() {
     	// PrintChar('\n');
     	char str[255];
 	int num = 0;
-	char c = ReadChar();
-	PrintChar(c);
+	// char c = ReadChar();
+	// PrintChar(c);
 	/*PrintString("Enter any number: ");
 	num = ReadInt();
 	PrintString("Your number: ");
@@ -19,5 +19,13 @@ int main() {
 	PrintString("\n");*/
     	// PrintInt(ReadInt());
     	// PrintChar('\n');
+
+
+
+		PrintString("Enter any number: ");
+	num = ReadInt();
+	PrintString("Your number: ");
+	PrintInt(num);
+	PrintString("\n");
     	Halt();
 }

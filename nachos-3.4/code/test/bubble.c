@@ -6,25 +6,24 @@
 #define MAX_SIZE 100
 int A[MAX_SIZE]; 
 int main() {
-    int n, i, j, tmp;
+    int n, i, j, temp;
     
-    //PrintString("Enter n: ");
+    PrintString("Input n: ");
     n = ReadInt();
-    //PrintString("You have enter: ");
-    //PrintInt(n);
-    //PrintString("\n");
+    PrintString("You have n: ");
+    PrintInt(n);
+    PrintString("\n");
 
     
     for (i = 0; i < n; i++) {
-       // PrintString("A[");
+       PrintString("A[");
         PrintInt(i);
-        //PrintString("] = ");
-
-        A[i] = ReadInt();
-       
+        PrintString("] = ");
+        A[i] = ReadInt();   
     }
+    PrintString("\n");
 
-    //PrintString("\nYou have enter:\n");
+    PrintString("Array:\n");
     for (i = 0; i < n; i++) {
         PrintInt(A[i]);
         //PrintChar('\t');
@@ -33,18 +32,19 @@ int main() {
     for (i = 0; i < n; i++) {
         for (j = 0; j < (n - i - 1); j++)
             if (A[j] > A[j + 1]) {
-                tmp = A[j];
+                temp = A[j];
                 A[j] = A[j + 1];
-                A[j + 1] = tmp;
+                A[j + 1] = temp;
             }
     }
 
-    //PrintString("\nAfter sort:\n");
+    PrintString("\n");
+    PrintString("Array after sort:\n");
     for (i = 0; i < n; i++) {
         PrintInt(A[i]);
-        //PrintChar('\t');
+        PrintChar('\t');
     }
-    //PrintChar('\n');
+    PrintString("\n");
 
     Halt();
 }
