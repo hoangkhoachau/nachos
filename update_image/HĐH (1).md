@@ -140,12 +140,18 @@
   ![ascii_3](ascii_3.png)
   ### 3.11 Viết chương trình *sort*
   **Các bước tiến hành**
-    - Dùng system call **ReadInt()** **PrintString**, **PrintInt**, vòng lặp **for** để nhập số lượng phần tử và giá trị cho từng phần tử của mảng
-    - Sau đó dùng thuật toán **Bubble Sort** để sắp xếp lại thứ tự các phần tử trong mảng
-    - Cuối cùng dùng vòng lặp **for** kết hợp với system call **PrintInt** để in ra mảng sau khi đã được sắp xếp
+    - Bước 1: Khai báo và nhập mảng
+        - Sử dụng 1 mảng chứa tối đa 100 phần tử kiểu số nguyên.
+        - Sử dụng 1 hàm PrintString, ReadInt để hiển thị yêu cầu và cho người dùng nhập số phần tử của mảng cần sắp xếp.
+        - Tiếp tục sử dụng hàm PrintString và ReadInt bên trong vòng lặp (số lần lặp bằng số phần tử của mảng đã nhập) để hiện thị vị trị của phần tử cần nhập và đọc giá trị nhập vào.
+        - Sau khhi nhập xong sử dụng vòng lặp để xuất ra các phần tử vừa nhập (PrintInt).    
+    - Bước 2: sử dụng thuật toán Bubble sort để thực hiện sort các phần tử trong mảng.
+    - Bước 3: sử dụng hàm PrintString và PrintInt bên trong vòng lặp (số lần lặp bằng số phần tử của mảng đã nhập) để hiện thị vị trị và giá trị của các phần tử sau khi sắp xếp xong.
+  - Chạy chương trình ascii bằng câu lệnh: "./userprog/nachos -rs 1023 -x test/bubble"
   **Demo chương trình:**
   ![bubble](bubble.png)
   
   
   
   
+   
