@@ -70,7 +70,6 @@
     - Sử dụng hàm read trong gSynchConSole để đọc giá trị của biến nhập và lưu vào ...
     - 
   - Demo:
-  ![char_1](char_1.png)
   ![char_2](char_2.png)
   ### 3.8 Cài đặt system call *void PrintChar(char character)*
   - Các bước thực hiện:
