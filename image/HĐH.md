@@ -58,9 +58,11 @@
   ### 3.2 Viết lại cấu trúc điều khiển của chương trình
   ### 3.3 
   ### 3.4 Cài đặt system call *int ReadInt()*
+  - Demo:
   ![int](int.png)
   ### 3.5 Cài đặt system call *void PrintInt(int number)*
   ### 3.6 Cài đặt system call *char ReadChar()*
+  - Demo:
   ![char_1](char_1.png)
   ![char_2](char_2.png)
   ### 3.7 Cài đặt system call *void PrintChar(char character)*
@@ -78,13 +80,22 @@
       - Dùng vòng lặp **while** để đếm số lượng kí tự trong chuỗi, đến khi gặp kí tự **\0** thì dừng
       - Dùng lệnh **synchcons->Write(buffer, length + 1);** để in chuỗi tự bộ nhớ đệm với độ dài length ra mà hình
   ### 3.10 Viết chương trình *help*
+  - Chương trình **help** sử dụng system call **PrintString** để in ra thông tin nhóm, thông tin về chương trình **Ascii** và **Sort**
+  - Demo:
   ![help](help.png)
   ### 3.11 Viết chương trình *ascii*
+  - Chương trình **ascii** sử dụng system call **PrintString** và **PrintInt** và vòng lặp **for** để in ra các giá trị tương ứng của bảng mã ASCII
+  - Demo:
   ![ascii_1](ascii_1.png)
   ![ascii_2](ascii_2.png)
   ![ascii_3](ascii_3.png)
   ### 3.12 Viết chương trình *sort*
-  ![bubble](.\Anh\bubble.png)
+  - Các bước thực hiện:
+    - Dùng system call **ReadInt()** **PrintString**, **PrintInt**, vòng lặp **for** để nhập số lượng phần tử và giá trị cho từng phần tử của mảng
+    - Sau đó dùng thuật toán **Bubble Sort** để sắp xếp lại thứ tự các phần tử trong mảng
+    - Cuối cùng dùng vòng lặp **for** kết hợp với system call **PrintInt** để in ra mảng sau khi đã được sắp xếp
+  - Demo:
+  ![bubble](bubble.png)
   
   
   
