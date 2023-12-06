@@ -52,7 +52,7 @@
   ## 3. Cài đặt
   ### 3.1 Cài đặt hàm *AdvancePC()*
   - Hàm này được dùng để tăng thanh ghi program counter
-  - Các bước thực hiện:
+  **Các bước tiến hành:**
     - Lưu giá trị trong thanh ghi PC hiện tại vào thanh ghi PC trước
     - Lưu giá trị của thanh ghi PC kế tiếp vào thanh ghi PC hiện tại
     - Tăng giá trị của thanh ghi PC kế tiếp lên 4 đơn vị
@@ -63,7 +63,7 @@
       -	Đối với syscall Halt thì chỉ thực hiện in ra màn hình và ngưng chương trình.
       -	Đối với các syscall khác thì thực hiện cài đặt các dòng lệnh thực hiện chức năng của syscall đó và gọi hàm advancePC() để tăng program counter
   ### 3.3 Cài đặt system call *int ReadInt()*
-  - Các bước thực hiện:
+  **Các bước tiến hành:**
     - Bước 1: Sử dụng hàm **Read** của **SynchConsole** để đọc dữ liệu người dùng nhập vào, lưu vào vùng nhớ char* buf.
     - Bước 2: Bỏ qua kí tự khoảng trắng ' ' và  số '0' ở đầu  buf nếu có. (vd: '0005', '    5')
     - Bước 3: Kiểm tra đầu chuỗi có kí tự '-' hay không (nếu có thì số người dùng nhập là số âm).
@@ -72,11 +72,11 @@
       - Còn lại: đầu vào không hợp lệ -> trả về 0.
     - Bước 5: Chuyển đầu vào hợp lệ sang kiểu int.
     - Bước 6: Trả kết quả: số int ở bước 5.
- **Trả kết quả: ghi giá trị kết quả vào thanh ghi số 2 ($v0)**
-  - Demo:
+  **Trả kết quả: ghi giá trị kết quả vào thanh ghi số 2 ($v0)**
+  **Demo chương trình:**
   ![int](int.png)
   ### 3.4 Cài đặt system call *void PrintInt(int number)*
-  - Các bước thực hiện:
+  **Các bước tiến hành:**
     - Bước 1: Đọc giá trị số nguyên từ thanh ghi số 4.
     - Bước 2: Xử lý giá trị số nguyên:
         - Kiểm tra nếu số là 0, in chuỗi "0" và kết thúc.
@@ -86,16 +86,16 @@
         - Đảo ngược chuỗi để có chuỗi số nguyên đúng.
     - Bước 4: In chuỗi: sử dụng hàm **Write** của **SynchConsole** để in chuỗi buf.
  ### 3.5 Cài đặt system call *char ReadChar()*
-  - Các bước thực hiện:
+  **Các bước tiến hành:**
     - Bước 1: Sử dụng hàm ***Read*** trong **gSynchConSole** để đọc giá trị của biến nhập và lưu vào biến tạm.
     - Bước 2: Ghi giá trị của biến tạm và thanh ghi số 2 ($v0).
     - Bước 3: Tăng thanh ghi con trỏ.
   ### 3.6 Cài đặt system call *void PrintChar(char character)*
-  - Các bước thực hiện:
+  **Các bước tiến hành:**
     - Bước 1: Đọc giá trị cần in ra từ thanh ghi số 4 ($a0).
     - Bước 2: Sử dụng hàm ***Write*** trong **gSynchConsole** để viết giá trị cần in ra màn hình.
     - Bước 3: Tăng thanh ghi con trỏ.
-  - Demo
+  **Demo chương trình:**
   ![char_2](char_2.png)
   ### 3.7 Cài đặt system call *void ReadString(char[] buffer, int length)*
   **Các bước tiến hành:**
@@ -116,28 +116,34 @@
       - Sử dụng vòng lặp while để kiểm tra độ dài chuỗi kí tự, đến kí tự '\0' thì dừng.
       - Sử dụng hàm ***Write*** của **gSynchConsole** để in từng chuỗi ký tự ra màn hình.
   - Bước 4: Tăng **program counter**, giải phóng buffer và kết thúc chương trình.
-
   **Demo chương trình:**
   - Test case 1: Người dùng nhập chuỗi có độ dài nhỏ hơn hoặc bằng độ dài cho trước.
     ![test case 1](print_string_2.png)
   - Test case 2: Người dùng nhập chuỗi có độ dài lớn hơn độ dài cho trước.
     ![test case 2](print_string_1.png)
   ### 3.9 Viết chương trình *help*
+  **Các bước tiến hành**
   - Chương trình **help** sử dụng system call **PrintString** để in ra thông tin nhóm, thông tin về chương trình **Ascii** và **Sort**
-  
+  **Demo chương trình:**
   ![help](help.png)
   ### 3.10 Viết chương trình *ascii*
-  - Chương trình **ascii** sử dụng system call **PrintString** và **PrintInt** và vòng lặp **for** để in ra các giá trị tương ứng của bảng mã ASCII
-  - Demo:
+  **Các bước tiến hành:**
+    - Bước 1: sử dụng 1 biến để lưu giá trị *int*. Dùng hàm PrintChar để in ra ký tự.
+    - Bước 2: thực hiện chạy vòng lặp từ: 0 tới 31. Để in ra màn hình các ký tự "ASCII control characters".
+    - Bước 3: thực hiện chạy vòng lặp từ 32 tới 127. Để in ra màn hình các ký tự "ASCII printable characters".
+    - Bước 4: tiếp tục thực hiên vòng lặp từ 128 tới 255. Để in ra màn hình các ký tự "The extended ASCII codes".
+        - Sử dụng thêm hàm PrintString, PrintInt để hoàn thiện bố cục in ra màn hình
+    - Bước 5: chạy chương trình ascii bằng câu lệnh: "./userprog/nachos -rs 1023 -x test/ascii"
+  **Demo chương trình:**
   ![ascii_1](ascii_1.png)
   ![ascii_2](ascii_2.png)
   ![ascii_3](ascii_3.png)
   ### 3.11 Viết chương trình *sort*
-  - Các bước thực hiện:
+  **Các bước tiến hành**
     - Dùng system call **ReadInt()** **PrintString**, **PrintInt**, vòng lặp **for** để nhập số lượng phần tử và giá trị cho từng phần tử của mảng
     - Sau đó dùng thuật toán **Bubble Sort** để sắp xếp lại thứ tự các phần tử trong mảng
     - Cuối cùng dùng vòng lặp **for** kết hợp với system call **PrintInt** để in ra mảng sau khi đã được sắp xếp
-  - Demo:
+  **Demo chương trình:**
   ![bubble](bubble.png)
   
   
