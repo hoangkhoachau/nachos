@@ -76,23 +76,30 @@
   - Các bước thực hiện:
   - Demo
   ### 3.9 Cài đặt system call *void ReadString(char[] buffer, int length)*
-  - Các bước thực hiện:
-      - Đọc địa chỉ của chuỗi ở thanh ghi số 4 và lưu vào biết **arr** bằng câu lệnh **int addr = machine->ReadRegister(4);**
-      - Đọc độ dài của chuỗi ở thanh ghi số 5 và lưu vào biến **length** bằng lệnh **int length = machine->ReadRegister(5);**
-      - Sau khi kiểm tra độ dài của chuỗi, ta dùng synchcons để đọc dữ liệu người dùng và lưu vào buffer với lệnh *synchcons->Read(buffer, length);*, 
-      - Cuối cùng ta dùng hàm ***System2User** được cài đặt ở trên để chuyển dữ liệu từ System sang User
-      - Giải phóng buffer và kết thúc
-  - Demo:
+  **Các bước tiến hành:**
+  - Bước 1: Đọc các tham số từ chương trình người dùng:
+      - Đọc địa chỉ vùng nhớ ***buffer*** của chuỗi do người dùng nhập vào từ thanh ghi số 4 ($a0).
+      - Đọc độ dài của chuỗi ***length*** từ thanh ghi số 5 ($a1).
+      - Kiểm tra độ dài ***length*** của chuỗi, nếu ***length*** âm hoặc ***length*** lớn hơn giới hạn chuỗi tối đa được định nghĩa từ trước thì thông báo lỗi và **Halt** chương trình . Nếu ***length*** hợp lệ, thì tiếp tục.
+  - Bước 2: Vì ***buffer*** do người dùng truyền vào thuộc về **user space** nên ta sẽ sử dụng hàm ***User2System*** để đổi vùng nhớ từ **user space** vào **system space**.
+  - Bước 3: Sử dụng hàm readString() để tiến hành đọc chuỗi ký tự:
+      - Sử dụng hàm ***Read*** của **gSynchConsole** để đọc chuỗi ký tự do người dùng nhập vào và lưu vào trong ***buffer***.
+      - Đọc chuỗi cho đến khi người dùng nhấn phím **Enter** thì dừng lại.
+  - Bước 4: Giải phóng buffer và kết thúc chương trình.
+
+  **Demo chương trình:**
+  - Test case 1: Người dùng nhập chuỗi có độ dài nhỏ hơn hoặc bằng độ dài cho trước.
+  - Test case 2: Người dùng nhập chuỗi có độ dài lớn hơn độ dài cho trước.
   ### 3.10 Cài đặt system call *void PrintString(char[] buffer)*
   - Các bước thực hiện:
     - Hàm PrintString với tham số đầu vào là bộ nhớ đệm(char* buffer) được cài đặt như sau:
       - Khai báo biến **length** để lưu số lượng kí tự trong chuỗi
       - Dùng vòng lặp **while** để đếm số lượng kí tự trong chuỗi, đến khi gặp kí tự **\0** thì dừng
-      - Dùng lệnh **synchcons->Write(buffer, length + 1);**(hàm **Write** của **synchcons**) để in chuỗi tự bộ nhớ đệm với độ dài length ra mà hình
+      - Dùng lệnh **gSynchCons->Write(buffer, length + 1);**(hàm **Write** của **synchcons**) để in chuỗi tự bộ nhớ đệm với độ dài length ra mà hình
       - Giải phóng buffer và kết thúc chương trình
   ### 3.11 Viết chương trình *help*
   - Chương trình **help** sử dụng system call **PrintString** để in ra thông tin nhóm, thông tin về chương trình **Ascii** và **Sort**
-  - Demo:
+  
   ![help](help.png)
   ### 3.12 Viết chương trình *ascii*
   - Chương trình **ascii** sử dụng system call **PrintString** và **PrintInt** và vòng lặp **for** để in ra các giá trị tương ứng của bảng mã ASCII
