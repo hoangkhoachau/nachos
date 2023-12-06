@@ -113,9 +113,9 @@
 
   **Demo chương trình:**
   - Test case 1: Người dùng nhập chuỗi có độ dài nhỏ hơn hoặc bằng độ dài cho trước.
-    ![test case 1](print_string_1.png)
+    ![test case 1](print_string_2.png)
   - Test case 2: Người dùng nhập chuỗi có độ dài lớn hơn độ dài cho trước.
-    ![test case 2](print_string_2.png)
+    ![test case 2](print_string_1.png)
   ### 3.11 Viết chương trình *help*
   - Chương trình **help** sử dụng system call **PrintString** để in ra thông tin nhóm, thông tin về chương trình **Ascii** và **Sort**
   
