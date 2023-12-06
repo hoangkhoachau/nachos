@@ -68,13 +68,32 @@
   ### 3.8 Cài đặt system call *void ReadString(char[] buffer, int length)*
   ### 3.9 Cài đặt system call *void PrintString(char[] buffer)*
   ### 3.10 Viết chương trình *help*
-  ![help](.\Anh\help.png)
+  - Cài đặt: Sử dụng system call PrintString để in ra thông tin nhóm, thông tin giới thiệu và hưỡng dẫn sử dụng chương trình ascii và bubble (sort).
+- Chỉnh sửa bố cục output hợp lý.
+- Chạy chương trình help bằng câu lệnh: "./userprog/nachos -rs 1023 -x test/help"
+  ![help](.\update_image\help.png)
   ### 3.11 Viết chương trình *ascii*
-  ![ascii_1](.\Anh\Ascii_1.png)
-  ![ascii_2](.\Anh\Ascii_2.png)
-  ![ascii_3](.\Anh\Ascii_3.png)
+- Cài đặt: Sử dụng 1 biến để lưu giá trị *int*. Dùng hàm PrintChar để in ra ký tự.
+    - Thực hiện chạy vòng lặp từ: 0 tới 31. Để in ra màn hình các ký tự "ASCII control characters".
+    - Thực hiện chạy vòng lặp từ 32 tới 127. Để in ra màn hình các ký tự "ASCII printable characters".
+    - Tiếp tục thực hiên vòng lặp từ 128 tới 255. Để in ra màn hình các ký tự "The extended ASCII codes".
+- Sử dụng thêm hàm PrintString, PrintInt để hoàn thiện bố cục in ra màn hình
+- Chạy chương trình ascii bằng câu lệnh: "./userprog/nachos -rs 1023 -x test/ascii"
+
+  ![ascii_1](.\update_image\ascii_1.png)
+  ![ascii_2](.\update_image\ascii_2.png)
+  ![ascii_3](.\update_image\ascii_3.png)
   ### 3.12 Viết chương trình *sort*
-  ![bubble](.\Anh\bubble.png)
+- Cài đặt: 
+    - Sử dụng 1 mảng chứa tối đa 100 phần tử kiểu số nguyên.
+    - Sử dụng 1 hàm PrintString, ReadInt để hiển thị yêu cầu và cho người dùng nhập số phần tử của mảng cần sắp xếp.
+    - Tiếp tục sử dụng hàm PrintString và ReadInt bên trong vòng lặp (số lần lặp bằng số phần tử của mảng đã nhập) để hiện thị vị trị của phần tử cần nhập và đọc giá trị nhập vào.
+    - Sau khhi nhập xong sử dụng vòng lặp để xuất ra các phần tử vừa nhập (PrintInt).
+    - Sử dụng thuật toán Bubble sort để thực hiện sort các phần tử trong mảng.
+    - Tiếp tục sử dụng hàm PrintString và PrintInt bên trong vòng lặp (số lần lặp bằng số phần tử của mảng đã nhập) để hiện thị vị trị và giá trị của các phần tử sau khi sắp xếp xong.
+- Chạy chương trình ascii bằng câu lệnh: "./userprog/nachos -rs 1023 -x test/bubble"
+  ![bubble](.\update_image\bubble.png)
+  
   
   
   
