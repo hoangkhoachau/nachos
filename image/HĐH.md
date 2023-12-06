@@ -50,23 +50,32 @@
 -	Có một số loại ngắt: một cho đĩa, một cho bộ đếm thời gian và hai cho bàn điều khiển và mạng. Đối với mỗi loại ngắt, hệ điều hành phải cung cấp một trình xử lý ngắt riêng. Mô phỏng phần cứng gọi trình xử lý thích hợp khi xảy ra một loại gián đoạn cụ thể.
 
   ## 3. Cài đặt
-  ### 3.1 Viết lại file exception.cc
-•	Xử lý tất cả các exceptions được liệt kê trong ./code/machine/machine.h 
-•	Trường hợp no exception sẽ trả quyền điều khiển về hệ điều hành.
-•	Trường hợp syscall exceptions, ứng với mỗi user system call ta sẽ viết một hàm để xử lý.
-•	Tất cả các exceptions khác, hệ điều hành hiển thị thông báo lỗi và Halt hệ thống.
-  ### 3.2 Viết lại cấu trúc điều khiển của chương trình
-  ### 3.3 
-  ### 3.4 Cài đặt system call *int ReadInt()*
+  ### 3.1 Thêm lớp *SynchConsole* vào Nachos
+  ### 3.2 Cài đặt hàm *AdvancePC()*
+  - Hàm này được dùng để tăng thanh ghi program counter
+  - Các bước thực hiện:
+    - Lưu giá trị trong thanh ghi PC hiện tại vào thanh ghi PC trước
+    - Lưu giá trị của thanh ghi PC kế tiếp vào thanh ghi PC hiện tại
+    - Tăng giá trị của thanh ghi PC kế tiếp lên 4 đơn vị
+  ### 3.3 Cài đặt và thêm 2 hàm *User2System* và *System2User* vào trong *exception.cc*
+  ### 3.4 Cài đặt lại các *exception*
+  ### 3.5 Cài đặt system call *int ReadInt()*
+  - Các bước thực hiện:
   - Demo:
   ![int](int.png)
-  ### 3.5 Cài đặt system call *void PrintInt(int number)*
-  ### 3.6 Cài đặt system call *char ReadChar()*
+  ### 3.6 Cài đặt system call *void PrintInt(int number)*
+  - Các bước thực hiện:
+  ### 3.7 Cài đặt system call *char ReadChar()*
+  - Các bước thực hiện:
+    - Sử dụng hàm read trong gSynchConSole để đọc giá trị của biến nhập và lưu vào ...
+    - 
   - Demo:
   ![char_1](char_1.png)
   ![char_2](char_2.png)
-  ### 3.7 Cài đặt system call *void PrintChar(char character)*
-  ### 3.8 Cài đặt system call *void ReadString(char[] buffer, int length)*
+  ### 3.8 Cài đặt system call *void PrintChar(char character)*
+  - Các bước thực hiện:
+  - Demo
+  ### 3.9 Cài đặt system call *void ReadString(char[] buffer, int length)*
   - Các bước thực hiện:
       - Đọc địa chỉ của chuỗi ở thanh ghi số 4 và lưu vào biết **arr** bằng câu lệnh **int addr = machine->ReadRegister(4);**
       - Đọc độ dài của chuỗi ở thanh ghi số 5 và lưu vào biến **length** bằng lệnh **int length = machine->ReadRegister(5);**
@@ -74,24 +83,24 @@
       - Cuối cùng ta dùng hàm ***System2User** được cài đặt ở trên để chuyển dữ liệu từ System sang User
       - Giải phóng buffer và kết thúc
   - Demo:
-  ### 3.9 Cài đặt system call *void PrintString(char[] buffer)*
+  ### 3.10 Cài đặt system call *void PrintString(char[] buffer)*
   - Các bước thực hiện:
     - Hàm PrintString với tham số đầu vào là bộ nhớ đệm(char* buffer) được cài đặt như sau:
       - Khai báo biến **length** để lưu số lượng kí tự trong chuỗi
       - Dùng vòng lặp **while** để đếm số lượng kí tự trong chuỗi, đến khi gặp kí tự **\0** thì dừng
       - Dùng lệnh **synchcons->Write(buffer, length + 1);**(hàm **Write** của **synchcons**) để in chuỗi tự bộ nhớ đệm với độ dài length ra mà hình
       - Giải phóng buffer và kết thúc chương trình
-  ### 3.10 Viết chương trình *help*
+  ### 3.11 Viết chương trình *help*
   - Chương trình **help** sử dụng system call **PrintString** để in ra thông tin nhóm, thông tin về chương trình **Ascii** và **Sort**
   - Demo:
   ![help](help.png)
-  ### 3.11 Viết chương trình *ascii*
+  ### 3.12 Viết chương trình *ascii*
   - Chương trình **ascii** sử dụng system call **PrintString** và **PrintInt** và vòng lặp **for** để in ra các giá trị tương ứng của bảng mã ASCII
   - Demo:
   ![ascii_1](ascii_1.png)
   ![ascii_2](ascii_2.png)
   ![ascii_3](ascii_3.png)
-  ### 3.12 Viết chương trình *sort*
+  ### 3.13 Viết chương trình *sort*
   - Các bước thực hiện:
     - Dùng system call **ReadInt()** **PrintString**, **PrintInt**, vòng lặp **for** để nhập số lượng phần tử và giá trị cho từng phần tử của mảng
     - Sau đó dùng thuật toán **Bubble Sort** để sắp xếp lại thứ tự các phần tử trong mảng
