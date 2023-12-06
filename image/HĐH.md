@@ -68,17 +68,19 @@
   ### 3.7 Cài đặt system call *void PrintChar(char character)*
   ### 3.8 Cài đặt system call *void ReadString(char[] buffer, int length)*
   - Các bước thực hiện:
-    - Cài đặt hàm *System2User với đầu vào là không gian vùng nhớ của User(*int virtAddr*), giới hạn của bộ nhớ( *int length*) và bộ nhớ đệm (*char* buffer *). Hàm *System2User dùng để sao chép từ System sang vùng nhớ của User
-    - Cài đặt ReadString với tham số đầu vào là bộ nhớ đệm(char* buffer) và độ dài của chuỗi kí tự(int length):
-      - Đầu tiên dùng synchcons để đọc dữ liệu người dùng với lệnh *synchcons->Read(buffer, length);*
-      - Khai báo biến **int addr** nhằm lưu dữ liệu trong thanh ghi thứ 4 bằng lệnh đọc **addr = machine->ReadRegister(4);**
+      - Đọc địa chỉ của chuỗi ở thanh ghi số 4 và lưu vào biết **arr** bằng câu lệnh **int addr = machine->ReadRegister(4);**
+      - Đọc độ dài của chuỗi ở thanh ghi số 5 và lưu vào biến **length** bằng lệnh **int length = machine->ReadRegister(5);**
+      - Sau khi kiểm tra độ dài của chuỗi, ta dùng synchcons để đọc dữ liệu người dùng và lưu vào buffer với lệnh *synchcons->Read(buffer, length);*, 
       - Cuối cùng ta dùng hàm ***System2User** được cài đặt ở trên để chuyển dữ liệu từ System sang User
+      - Giải phóng buffer và kết thúc
+  - Demo:
   ### 3.9 Cài đặt system call *void PrintString(char[] buffer)*
   - Các bước thực hiện:
     - Hàm PrintString với tham số đầu vào là bộ nhớ đệm(char* buffer) được cài đặt như sau:
       - Khai báo biến **length** để lưu số lượng kí tự trong chuỗi
       - Dùng vòng lặp **while** để đếm số lượng kí tự trong chuỗi, đến khi gặp kí tự **\0** thì dừng
-      - Dùng lệnh **synchcons->Write(buffer, length + 1);** để in chuỗi tự bộ nhớ đệm với độ dài length ra mà hình
+      - Dùng lệnh **synchcons->Write(buffer, length + 1);**(hàm **Write** của **synchcons**) để in chuỗi tự bộ nhớ đệm với độ dài length ra mà hình
+      - Giải phóng buffer và kết thúc chương trình
   ### 3.10 Viết chương trình *help*
   - Chương trình **help** sử dụng system call **PrintString** để in ra thông tin nhóm, thông tin về chương trình **Ascii** và **Sort**
   - Demo:
