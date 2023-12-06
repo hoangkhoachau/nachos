@@ -128,26 +128,26 @@
   ![help](help.png)
   ### 3.10 Viết chương trình *ascii*
   **Các bước tiến hành:**
-    - Bước 1: sử dụng 1 biến để lưu giá trị *int*. Dùng hàm PrintChar để in ra ký tự.
-    - Bước 2: thực hiện chạy vòng lặp từ: 0 tới 31. Để in ra màn hình các ký tự "ASCII control characters".
-    - Bước 3: thực hiện chạy vòng lặp từ 32 tới 127. Để in ra màn hình các ký tự "ASCII printable characters".
-    - Bước 4: tiếp tục thực hiên vòng lặp từ 128 tới 255. Để in ra màn hình các ký tự "The extended ASCII codes".
-        - Sử dụng thêm hàm PrintString, PrintInt để hoàn thiện bố cục in ra màn hình
-    - Bước 5: chạy chương trình ascii bằng câu lệnh: "./userprog/nachos -rs 1023 -x test/ascii"
+- Bước 1: sử dụng 1 biến để lưu giá trị *int*. Dùng hàm PrintChar để in ra ký tự.
+- Bước 2: thực hiện chạy vòng lặp từ: 0 tới 31. Để in ra màn hình các ký tự "ASCII control characters".
+- Bước 3: thực hiện chạy vòng lặp từ 32 tới 127. Để in ra màn hình các ký tự "ASCII printable characters".
+- Bước 4: tiếp tục thực hiên vòng lặp từ 128 tới 255. Để in ra màn hình các ký tự "The extended ASCII codes".
+  - Sử dụng thêm hàm PrintString, PrintInt để hoàn thiện bố cục in ra màn hình
+- Bước 5: chạy chương trình ascii bằng câu lệnh: "./userprog/nachos -rs 1023 -x test/ascii"
   **Demo chương trình:**
   ![ascii_1](ascii_1.png)
   ![ascii_2](ascii_2.png)
   ![ascii_3](ascii_3.png)
   ### 3.11 Viết chương trình *sort*
   **Các bước tiến hành**
-    - Bước 1: Khai báo và nhập mảng
-        - Sử dụng 1 mảng chứa tối đa 100 phần tử kiểu số nguyên.
-        - Sử dụng 1 hàm PrintString, ReadInt để hiển thị yêu cầu và cho người dùng nhập số phần tử của mảng cần sắp xếp.
-        - Tiếp tục sử dụng hàm PrintString và ReadInt bên trong vòng lặp (số lần lặp bằng số phần tử của mảng đã nhập) để hiện thị vị trị của phần tử cần nhập và đọc giá trị nhập vào.
-        - Sau khhi nhập xong sử dụng vòng lặp để xuất ra các phần tử vừa nhập (PrintInt).    
-    - Bước 2: sử dụng thuật toán Bubble sort để thực hiện sort các phần tử trong mảng.
-    - Bước 3: sử dụng hàm PrintString và PrintInt bên trong vòng lặp (số lần lặp bằng số phần tử của mảng đã nhập) để hiện thị vị trị và giá trị của các phần tử sau khi sắp xếp xong.
-  - Chạy chương trình ascii bằng câu lệnh: "./userprog/nachos -rs 1023 -x test/bubble"
+ - Bước 1: Khai báo và nhập mảng
+    - Sử dụng 1 mảng chứa tối đa 100 phần tử kiểu số nguyên.
+    - Sử dụng 1 hàm PrintString, ReadInt để hiển thị yêu cầu và cho người dùng nhập số phần tử của mảng cần sắp xếp.
+    - Tiếp tục sử dụng hàm PrintString và ReadInt bên trong vòng lặp (số lần lặp bằng số phần tử của mảng đã nhập) để hiện thị vị trị của phần tử cần nhập và đọc giá trị nhập vào.
+    - Sau khhi nhập xong sử dụng vòng lặp để xuất ra các phần tử vừa nhập (PrintInt).    
+- Bước 2: sử dụng thuật toán Bubble sort để thực hiện sort các phần tử trong mảng.
+- Bước 3: sử dụng hàm PrintString và PrintInt bên trong vòng lặp (số lần lặp bằng số phần tử của mảng đã nhập) để hiện thị vị trị và giá trị của các phần tử sau khi sắp xếp xong.
+- Chạy chương trình ascii bằng câu lệnh: "./userprog/nachos -rs 1023 -x test/bubble"
   **Demo chương trình:**
   ![bubble](bubble.png)
   
