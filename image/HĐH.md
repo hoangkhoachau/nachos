@@ -61,10 +61,28 @@
   ### 3.4 Cài đặt lại các *exception*
   ### 3.5 Cài đặt system call *int ReadInt()*
   - Các bước thực hiện:
+    - Bước 1: Sử dụng hàm **Read** của **SynchConsole** để đọc dữ liệu người dùng nhập vào, lưu vào vùng nhớ char* buf.
+    - Bước 2: Bỏ qua kí tự khoảng trắng ' ' và  số '0' ở đầu  buf nếu có. (vd: '0005', '    5')
+    - Bước 3: Kiểm tra đầu chuỗi có kí tự '-' hay không (nếu có thì số người dùng nhập là số âm).
+    - Bước 4: Kiểm tra trong chuỗi có kí tự khác chữ số
+      - Tồn tại kí tự '.': kiểm tra các kí tự phía sau '.', đều là '0'  (vd: 1.00000) -> đầu vào hợp lệ.
+      - Còn lại: đầu vào không hợp lệ -> trả về 0.
+    - Bước 5: Chuyển đầu vào hợp lệ sang kiểu int.
+    - Bước 6: Trả kết quả: số int ở bước 5.
+ **Trả kết quả: ghi giá trị kết quả vào thanh ghi số 2 ($v0)**
   - Demo:
   ![int](int.png)
   ### 3.6 Cài đặt system call *void PrintInt(int number)*
   - Các bước thực hiện:
+    - Bước 1: Đọc giá trị số nguyên từ thanh ghi số 4.
+    - Bước 2: Xử lý giá trị số nguyên:
+        - Kiểm tra nếu số là 0, in chuỗi "0" và kết thúc.
+        - Xác định dấu của số (nếu có) và chuyển số âm thành số dương để xử lý.
+    - Bước 3: Chuyển số nguyên thành chuỗi:
+        - Sử dụng vòng lặp để chia lấy dư và lưu từng chữ số vào mảng buf.
+        - Đảo ngược chuỗi để có chuỗi số nguyên đúng.
+    - Bước 4: In chuỗi: sử dụng hàm **Write** của **SynchConsole** để in chuỗi buf.
+
   ### 3.7 Cài đặt system call *char ReadChar()*
   - Các bước thực hiện:
     - Sử dụng hàm read trong gSynchConSole để đọc giá trị của biến nhập và lưu vào ...
