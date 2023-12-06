@@ -72,7 +72,7 @@
 - Chỉnh sửa bố cục output hợp lý.
 - Chạy chương trình help bằng câu lệnh: "./userprog/nachos -rs 1023 -x test/help"
   
-  ![help](.\update_image\help.png)
+  ![help](./update_image/help.png)
   ### 3.11 Viết chương trình *ascii*
 - Cài đặt: Sử dụng 1 biến để lưu giá trị *int*. Dùng hàm PrintChar để in ra ký tự.
     - Thực hiện chạy vòng lặp từ: 0 tới 31. Để in ra màn hình các ký tự "ASCII control characters".
@@ -81,9 +81,9 @@
 - Sử dụng thêm hàm PrintString, PrintInt để hoàn thiện bố cục in ra màn hình
 - Chạy chương trình ascii bằng câu lệnh: "./userprog/nachos -rs 1023 -x test/ascii"
 
-  ![ascii_1](.\update_image\ascii_1.png)
-  ![ascii_2](.\update_image\ascii_2.png)
-  ![ascii_3](.\update_image\ascii_3.png)
+  ![ascii_1](./update_image/ascii_1.png)
+  ![ascii_2](./update_image/ascii_2.png)
+  ![ascii_3](./update_image/ascii_3.png)
   ### 3.12 Viết chương trình *sort*
 - Cài đặt: 
     - Sử dụng 1 mảng chứa tối đa 100 phần tử kiểu số nguyên.
@@ -94,7 +94,7 @@
     - Tiếp tục sử dụng hàm PrintString và PrintInt bên trong vòng lặp (số lần lặp bằng số phần tử của mảng đã nhập) để hiện thị vị trị và giá trị của các phần tử sau khi sắp xếp xong.
 - Chạy chương trình ascii bằng câu lệnh: "./userprog/nachos -rs 1023 -x test/bubble"
 
-  ![bubble](.\update_image\bubble.png)
+  ![bubble](./update_image/bubble.png)
   
   
   
