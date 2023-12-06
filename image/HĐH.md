@@ -51,7 +51,10 @@
 
   ## 3. Cài đặt
   ### 3.1 Viết lại file exception.cc
-  - 
+•	Xử lý tất cả các exceptions được liệt kê trong ./code/machine/machine.h 
+•	Trường hợp no exception sẽ trả quyền điều khiển về hệ điều hành.
+•	Trường hợp syscall exceptions, ứng với mỗi user system call ta sẽ viết một hàm để xử lý.
+•	Tất cả các exceptions khác, hệ điều hành hiển thị thông báo lỗi và Halt hệ thống.
   ### 3.2 Viết lại cấu trúc điều khiển của chương trình
   ### 3.3 
   ### 3.4 Cài đặt system call *int ReadInt()*
@@ -62,7 +65,18 @@
   ![char_2](char_2.png)
   ### 3.7 Cài đặt system call *void PrintChar(char character)*
   ### 3.8 Cài đặt system call *void ReadString(char[] buffer, int length)*
+  - Các bước thực hiện:
+    - Cài đặt hàm *System2User với đầu vào là không gian vùng nhớ của User(*int virtAddr*), giới hạn của bộ nhớ( *int length*) và bộ nhớ đệm (*char* buffer *). Hàm *System2User dùng để sao chép từ System sang vùng nhớ của User
+    - Cài đặt ReadString với tham số đầu vào là bộ nhớ đệm(char* buffer) và độ dài của chuỗi kí tự(int length):
+      - Đầu tiên dùng synchcons để đọc dữ liệu người dùng với lệnh *synchcons->Read(buffer, length);*
+      - Khai báo biến **int addr** nhằm lưu dữ liệu trong thanh ghi thứ 4 bằng lệnh đọc **addr = machine->ReadRegister(4);**
+      - Cuối cùng ta dùng hàm ***System2User** được cài đặt ở trên để chuyển dữ liệu từ System sang User
   ### 3.9 Cài đặt system call *void PrintString(char[] buffer)*
+  - Các bước thực hiện:
+    - Hàm PrintString với tham số đầu vào là bộ nhớ đệm(char* buffer) được cài đặt như sau:
+      - Khai báo biến **length** để lưu số lượng kí tự trong chuỗi
+      - Dùng vòng lặp **while** để đếm số lượng kí tự trong chuỗi, đến khi gặp kí tự **\0** thì dừng
+      - Dùng lệnh **synchcons->Write(buffer, length + 1);** để in chuỗi tự bộ nhớ đệm với độ dài length ra mà hình
   ### 3.10 Viết chương trình *help*
   ![help](help.png)
   ### 3.11 Viết chương trình *ascii*
