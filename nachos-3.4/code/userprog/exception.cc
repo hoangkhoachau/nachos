@@ -130,14 +130,33 @@ void ExceptionHandler(ExceptionType which) {
     case NoException: // return control to kernel
         return;
     case PageFaultException:
+        printf("Page Fault Exception!\n");
+        DEBUG('a',"Page Fault Exception!\n");
+        interrupt->Halt();
     case ReadOnlyException:
+        printf("Read Only Exception!\n");
+        DEBUG('a',"Read Only Exception!\n");
+        interrupt->Halt();
     case BusErrorException:
+        printf("Bus Error Exception!\n");
+        DEBUG('a',"Bus Error Exception!\n");
+        interrupt->Halt();
     case AddressErrorException:
+        printf("Address Error Exception!\n");
+        DEBUG('a',"Address Error Exception!\n");
+        interrupt->Halt();
     case OverflowException:
+        printf("Overflow Exception!\n");
+        DEBUG('a',"Overflow Exception!\n");
+        interrupt->Halt();
     case IllegalInstrException:
+        printf("Illegal Instruction Exception!\n");
+        DEBUG('a',"Illegal Instruction Exception!\n");
+        interrupt->Halt();
     case NumExceptionTypes:
-        printf("%s Occurred!\n",which);
-        DEBUG('a', which, "\n");
+        printf("Number Exception!\n");
+        DEBUG('a',"Number Exception!\n");
+        /* DEBUG('a', which, "\n"); */
         interrupt->Halt();
 
     case SyscallException:
