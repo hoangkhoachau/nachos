@@ -85,18 +85,19 @@
   - Bước 3: Sử dụng hàm readString() để tiến hành đọc chuỗi ký tự:
       - Sử dụng hàm ***Read*** của **gSynchConsole** để đọc chuỗi ký tự do người dùng nhập vào và lưu vào trong ***buffer***.
       - Đọc chuỗi cho đến khi người dùng nhấn phím **Enter** thì dừng lại.
-  - Bước 4: Giải phóng buffer và kết thúc chương trình.
+  - Bước 4: Tăng **program counter**, giải phóng buffer và kết thúc chương trình.
+  ### 3.10 Cài đặt system call *void PrintString(char[] buffer)*
+  **Các bước tiến hành:**
+  - Bước 1: Đọc địa chỉ vùng nhớ ***buffer*** của chuỗi do người dùng nhập vào từ thanh ghi số 4 ($a0).
+  - Bước 2: Vì ***buffer*** do người dùng truyền vào thuộc về **user space** nên ta sẽ sử dụng hàm ***User2System*** để đổi vùng nhớ từ **user space** vào **system space** để phục vụ cho việc in chuỗi.
+  - Bước 3: Sử dụng hàm printString() để tiến hành in chuỗi ký tự:
+      - Sử dụng vòng lặp while để kiểm tra độ dài chuỗi kí tự, đến kí tự '\0' thì dừng.
+      - Sử dụng hàm ***Write*** của **gSynchConsole** để in từng chuỗi ký tự ra màn hình.
+  - Bước 4: Tăng **program counter**, giải phóng buffer và kết thúc chương trình.
 
   **Demo chương trình:**
   - Test case 1: Người dùng nhập chuỗi có độ dài nhỏ hơn hoặc bằng độ dài cho trước.
   - Test case 2: Người dùng nhập chuỗi có độ dài lớn hơn độ dài cho trước.
-  ### 3.10 Cài đặt system call *void PrintString(char[] buffer)*
-  - Các bước thực hiện:
-    - Hàm PrintString với tham số đầu vào là bộ nhớ đệm(char* buffer) được cài đặt như sau:
-      - Khai báo biến **length** để lưu số lượng kí tự trong chuỗi
-      - Dùng vòng lặp **while** để đếm số lượng kí tự trong chuỗi, đến khi gặp kí tự **\0** thì dừng
-      - Dùng lệnh **gSynchCons->Write(buffer, length + 1);**(hàm **Write** của **synchcons**) để in chuỗi tự bộ nhớ đệm với độ dài length ra mà hình
-      - Giải phóng buffer và kết thúc chương trình
   ### 3.11 Viết chương trình *help*
   - Chương trình **help** sử dụng system call **PrintString** để in ra thông tin nhóm, thông tin về chương trình **Ascii** và **Sort**
   
