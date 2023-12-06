@@ -50,16 +50,19 @@
 -	Có một số loại ngắt: một cho đĩa, một cho bộ đếm thời gian và hai cho bàn điều khiển và mạng. Đối với mỗi loại ngắt, hệ điều hành phải cung cấp một trình xử lý ngắt riêng. Mô phỏng phần cứng gọi trình xử lý thích hợp khi xảy ra một loại gián đoạn cụ thể.
 
   ## 3. Cài đặt
-  ### 3.1 Thêm lớp *SynchConsole* vào Nachos
-  ### 3.2 Cài đặt hàm *AdvancePC()*
+  ### 3.1 Cài đặt hàm *AdvancePC()*
   - Hàm này được dùng để tăng thanh ghi program counter
   - Các bước thực hiện:
     - Lưu giá trị trong thanh ghi PC hiện tại vào thanh ghi PC trước
     - Lưu giá trị của thanh ghi PC kế tiếp vào thanh ghi PC hiện tại
     - Tăng giá trị của thanh ghi PC kế tiếp lên 4 đơn vị
-  ### 3.3 Cài đặt và thêm 2 hàm *User2System* và *System2User* vào trong *exception.cc*
-  ### 3.4 Cài đặt lại các *exception*
-  ### 3.5 Cài đặt system call *int ReadInt()*
+  ### 3.2 Cài đặt lại các *exception*
+  -	Trường hợp **No Exception** thì break và trả quyền điều khiển lại cho HĐH.
+  -	Trường hợp các **Runtime Exception** thì in ra lỗi và gọi interrupt->Halt() để ngưng chương trình.
+  -	Trường hợp **Syscall Exception**:
+      -	Đối với syscall Halt thì chỉ thực hiện in ra màn hình và ngưng chương trình.
+      -	Đối với các syscall khác thì thực hiện cài đặt các dòng lệnh thực hiện chức năng của syscall đó và gọi hàm advancePC() để tăng program counter
+  ### 3.3 Cài đặt system call *int ReadInt()*
   - Các bước thực hiện:
     - Bước 1: Sử dụng hàm **Read** của **SynchConsole** để đọc dữ liệu người dùng nhập vào, lưu vào vùng nhớ char* buf.
     - Bước 2: Bỏ qua kí tự khoảng trắng ' ' và  số '0' ở đầu  buf nếu có. (vd: '0005', '    5')
@@ -72,7 +75,7 @@
  **Trả kết quả: ghi giá trị kết quả vào thanh ghi số 2 ($v0)**
   - Demo:
   ![int](int.png)
-  ### 3.6 Cài đặt system call *void PrintInt(int number)*
+  ### 3.4 Cài đặt system call *void PrintInt(int number)*
   - Các bước thực hiện:
     - Bước 1: Đọc giá trị số nguyên từ thanh ghi số 4.
     - Bước 2: Xử lý giá trị số nguyên:
@@ -82,16 +85,19 @@
         - Sử dụng vòng lặp để chia lấy dư và lưu từng chữ số vào mảng buf.
         - Đảo ngược chuỗi để có chuỗi số nguyên đúng.
     - Bước 4: In chuỗi: sử dụng hàm **Write** của **SynchConsole** để in chuỗi buf.
-  ### 3.7 Cài đặt system call *char ReadChar()*
+ ### 3.5 Cài đặt system call *char ReadChar()*
   - Các bước thực hiện:
-    - Sử dụng hàm read trong gSynchConSole để đọc giá trị của biến nhập và lưu vào ...
-    - 
-  - Demo:
-  ![char_2](char_2.png)
-  ### 3.8 Cài đặt system call *void PrintChar(char character)*
+    - Bước 1: Sử dụng hàm ***Read*** trong **gSynchConSole** để đọc giá trị của biến nhập và lưu vào biến tạm.
+    - Bước 2: Ghi giá trị của biến tạm và thanh ghi số 2 ($v0).
+    - Bước 3: Tăng thanh ghi con trỏ.
+  ### 3.6 Cài đặt system call *void PrintChar(char character)*
   - Các bước thực hiện:
+    - Bước 1: Đọc giá trị cần in ra từ thanh ghi số 4 ($a0).
+    - Bước 2: Sử dụng hàm ***Write*** trong **gSynchConsole** để viết giá trị cần in ra màn hình.
+    - Bước 3: Tăng thanh ghi con trỏ.
   - Demo
-  ### 3.9 Cài đặt system call *void ReadString(char[] buffer, int length)*
+  ![char_2](char_2.png)
+  ### 3.7 Cài đặt system call *void ReadString(char[] buffer, int length)*
   **Các bước tiến hành:**
   - Bước 1: Đọc các tham số từ chương trình người dùng:
       - Đọc địa chỉ vùng nhớ ***buffer*** của chuỗi do người dùng nhập vào từ thanh ghi số 4 ($a0).
@@ -102,7 +108,7 @@
       - Sử dụng hàm ***Read*** của **gSynchConsole** để đọc chuỗi ký tự do người dùng nhập vào và lưu vào trong ***buffer***.
       - Đọc chuỗi cho đến khi người dùng nhấn phím **Enter** thì dừng lại.
   - Bước 4: Tăng **program counter**, giải phóng buffer và kết thúc chương trình.
-  ### 3.10 Cài đặt system call *void PrintString(char[] buffer)*
+  ### 3.8 Cài đặt system call *void PrintString(char[] buffer)*
   **Các bước tiến hành:**
   - Bước 1: Đọc địa chỉ vùng nhớ ***buffer*** của chuỗi do người dùng nhập vào từ thanh ghi số 4 ($a0).
   - Bước 2: Vì ***buffer*** do người dùng truyền vào thuộc về **user space** nên ta sẽ sử dụng hàm ***User2System*** để đổi vùng nhớ từ **user space** vào **system space** để phục vụ cho việc in chuỗi.
@@ -116,17 +122,17 @@
     ![test case 1](print_string_2.png)
   - Test case 2: Người dùng nhập chuỗi có độ dài lớn hơn độ dài cho trước.
     ![test case 2](print_string_1.png)
-  ### 3.11 Viết chương trình *help*
+  ### 3.9 Viết chương trình *help*
   - Chương trình **help** sử dụng system call **PrintString** để in ra thông tin nhóm, thông tin về chương trình **Ascii** và **Sort**
   
   ![help](help.png)
-  ### 3.12 Viết chương trình *ascii*
+  ### 3.10 Viết chương trình *ascii*
   - Chương trình **ascii** sử dụng system call **PrintString** và **PrintInt** và vòng lặp **for** để in ra các giá trị tương ứng của bảng mã ASCII
   - Demo:
   ![ascii_1](ascii_1.png)
   ![ascii_2](ascii_2.png)
   ![ascii_3](ascii_3.png)
-  ### 3.13 Viết chương trình *sort*
+  ### 3.11 Viết chương trình *sort*
   - Các bước thực hiện:
     - Dùng system call **ReadInt()** **PrintString**, **PrintInt**, vòng lặp **for** để nhập số lượng phần tử và giá trị cho từng phần tử của mảng
     - Sau đó dùng thuật toán **Bubble Sort** để sắp xếp lại thứ tự các phần tử trong mảng
