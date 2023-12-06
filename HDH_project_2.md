@@ -71,6 +71,7 @@
   - Cài đặt: Sử dụng system call PrintString để in ra thông tin nhóm, thông tin giới thiệu và hưỡng dẫn sử dụng chương trình ascii và bubble (sort).
 - Chỉnh sửa bố cục output hợp lý.
 - Chạy chương trình help bằng câu lệnh: "./userprog/nachos -rs 1023 -x test/help"
+  
   ![help](.\update_image\help.png)
   ### 3.11 Viết chương trình *ascii*
 - Cài đặt: Sử dụng 1 biến để lưu giá trị *int*. Dùng hàm PrintChar để in ra ký tự.
@@ -92,6 +93,7 @@
     - Sử dụng thuật toán Bubble sort để thực hiện sort các phần tử trong mảng.
     - Tiếp tục sử dụng hàm PrintString và PrintInt bên trong vòng lặp (số lần lặp bằng số phần tử của mảng đã nhập) để hiện thị vị trị và giá trị của các phần tử sau khi sắp xếp xong.
 - Chạy chương trình ascii bằng câu lệnh: "./userprog/nachos -rs 1023 -x test/bubble"
+
   ![bubble](.\update_image\bubble.png)
   
   
