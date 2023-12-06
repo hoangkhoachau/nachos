@@ -136,7 +136,8 @@ void ExceptionHandler(ExceptionType which) {
     case OverflowException:
     case IllegalInstrException:
     case NumExceptionTypes:
-        // DEBUG('a', which, "\n");
+        printf("%s Occurred!\n",which);
+        DEBUG('a', which, "\n");
         interrupt->Halt();
 
     case SyscallException:
