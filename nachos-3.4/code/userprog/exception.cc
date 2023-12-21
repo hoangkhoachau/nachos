@@ -319,7 +319,7 @@ case SC_Join:
 			int res = pTab->JoinUpdate(id);
 			
 			machine->WriteRegister(2, res);
-			IncreasePC();
+			AdvancePC();
 			return;
 		}
 		case SC_Exit:
@@ -330,7 +330,7 @@ case SC_Join:
 
 			if(exitStatus != 0)
 			{
-				IncreasePC();
+				AdvancePC();
 				return;
 				
 			}			
@@ -340,7 +340,7 @@ case SC_Join:
 
 			currentThread->FreeSpace();
 			currentThread->Finish();
-			IncreasePC();
+			AdvancePC();
 			return; 
 				
 		}

@@ -37,6 +37,9 @@
 #define SC_ReadString 15
 #define SC_PrintString 16
 
+// Syscall Semaphore
+#define SC_CreateSemaphore	18
+
 #ifndef IN_ASM
 
 /* The system call interface.  These are the operations the Nachos
@@ -139,6 +142,12 @@ void PrintChar(char c);
 
 void ReadString(char* buffer, int length);
 void PrintString(char* buffer);
+
+
+// Ham cho semaphore
+// Success: 0 - Failed: -1
+// Ham tao 1 semaphore voi ten semaphore
+int CreateSemaphore(char* name, int semval);
 
 #endif /* IN_ASM */
 
