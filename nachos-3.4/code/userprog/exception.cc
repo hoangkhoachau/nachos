@@ -306,6 +306,77 @@ void ExceptionHandler(ExceptionType which) {
             AdvancePC();
             delete[] buffer;
         } break;
+	case SC_Join:
+		{       
+			// int Join(SpaceId id)
+			// Input: id dia chi cua thread
+			// Output: 
+			int id = machine->ReadRegister(4);
+			
+			int res = pTab->JoinUpdate(id);
+			
+			machine->WriteRegister(2, res);
+			IncreasePC();
+			return;
+		}
+		case SC_Exit:
+		{
+			//void Exit(int status);
+			// Input: status code
+			int exitStatus = machine->ReadRegister(4);
+
+			if(exitStatus != 0)
+			{
+				IncreasePC();
+				return;
+				
+			}			
+			
+			int res = pTab->ExitUpdate(exitStatus);
+			//machine->WriteRegister(2, res);
+
+			currentThread->FreeSpace();
+			currentThread->Finish();
+			IncreasePC();
+			return; 
+				
+		}
+        case SC_CreateSemaphore:
+		{
+			// int CreateSemaphore(char* name, int semval).
+			int virtAddr = machine->ReadRegister(4);
+			int semval = machine->ReadRegister(5);
+
+			char *name = User2System(virtAddr, MaxFileLength + 1);
+			if(name == NULL)
+			{
+				DEBUG('a', "\n Not enough memory in System");
+				printf("\n Not enough memory in System");
+				machine->WriteRegister(2, -1);
+				delete[] name;
+				AdvancePC();
+				return;
+			}
+			
+			int res = semTab->Create(name, semval);
+
+			if(res == -1)
+			{
+				DEBUG('a', "\n Khong the khoi tao semaphore");
+				printf("\n Khong the khoi tao semaphore");
+				machine->WriteRegister(2, -1);
+				delete[] name;
+				AdvancePC();
+				return;				
+			}
+			
+			delete[] name;
+			machine->WriteRegister(2, res);
+			AdvancePC();
+			return;
+		}
+			
+
         default:
             AdvancePC();
             break;
