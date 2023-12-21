@@ -27,7 +27,6 @@
 #include <cstring>
 #define MAX_READ_STRING_LENGTH 255
 
-
 #define MaxFileLength 32 // Do dai quy uoc cho file name
 //----------------------------------------------------------------------
 // ExceptionHandler
@@ -114,8 +113,9 @@ void readString(char *buffer, int length) {
     gSynchConsole->Read(buffer,
                         length); // dung synchcons de doc du lieu tu nguoi dung
     int addr;
-    addr = machine->ReadRegister(4);   // doc thanh ghi thu 4
-    System2User(addr, length, buffer); // chuyen du lieu tu system den user
+    addr = machine->ReadRegister(4); // doc thanh ghi thu 4
+    System2User(addr, length,
+                buffer); // chuyen du lieu tu system den user
 }
 
 // In chuoi ki tu:
@@ -133,31 +133,31 @@ void ExceptionHandler(ExceptionType which) {
         return;
     case PageFaultException:
         printf("Page Fault Exception!\n");
-        DEBUG('a',"Page Fault Exception!\n");
+        DEBUG('a', "Page Fault Exception!\n");
         interrupt->Halt();
     case ReadOnlyException:
         printf("Read Only Exception!\n");
-        DEBUG('a',"Read Only Exception!\n");
+        DEBUG('a', "Read Only Exception!\n");
         interrupt->Halt();
     case BusErrorException:
         printf("Bus Error Exception!\n");
-        DEBUG('a',"Bus Error Exception!\n");
+        DEBUG('a', "Bus Error Exception!\n");
         interrupt->Halt();
     case AddressErrorException:
         printf("Address Error Exception!\n");
-        DEBUG('a',"Address Error Exception!\n");
+        DEBUG('a', "Address Error Exception!\n");
         interrupt->Halt();
     case OverflowException:
         printf("Overflow Exception!\n");
-        DEBUG('a',"Overflow Exception!\n");
+        DEBUG('a', "Overflow Exception!\n");
         interrupt->Halt();
     case IllegalInstrException:
         printf("Illegal Instruction Exception!\n");
-        DEBUG('a',"Illegal Instruction Exception!\n");
+        DEBUG('a', "Illegal Instruction Exception!\n");
         interrupt->Halt();
     case NumExceptionTypes:
         printf("Number Exception!\n");
-        DEBUG('a',"Number Exception!\n");
+        DEBUG('a', "Number Exception!\n");
         /* DEBUG('a', which, "\n"); */
         interrupt->Halt();
 
@@ -167,7 +167,7 @@ void ExceptionHandler(ExceptionType which) {
             // DEBUG('a', "Shutdown, initiated by user program.\n");
             // printf("Unexpected user mode exception %d %d\n", which, type);
             interrupt->Halt();
-        }
+        } break;
         case SC_ReadInt: {
             int maxBuf = 255;
             char *buf = new char[maxBuf + 1];
@@ -280,6 +280,7 @@ void ExceptionHandler(ExceptionType which) {
             machine->WriteRegister(2, c); // doc dia chi cua chuoi
             AdvancePC();
         } break;
+
         case SC_PrintChar: {
             char c = machine->ReadRegister(4); // doc dia chi cua chuoi
             gSynchConsole->Write(&c, 1);
@@ -301,6 +302,7 @@ void ExceptionHandler(ExceptionType which) {
             delete[] buffer;
             AdvancePC();
         } break;
+
         case SC_PrintString: {
             int addr = machine->ReadRegister(4); // doc dia chi cua chuoi
             char *buffer = User2System(addr, MAX_READ_STRING_LENGTH);
@@ -309,76 +311,321 @@ void ExceptionHandler(ExceptionType which) {
             delete[] buffer;
         } break;
 
-case SC_Join:
-		{       
-			// int Join(SpaceId id)
-			// Input: id dia chi cua thread
-			// Output: 
-			int id = machine->ReadRegister(4);
-			
-			int res = pTab->JoinUpdate(id);
-			
-			machine->WriteRegister(2, res);
-			IncreasePC();
-			return;
-		}
-		case SC_Exit:
-		{
-			//void Exit(int status);
-			// Input: status code
-			int exitStatus = machine->ReadRegister(4);
+        case SC_Create: {
+            // get buffer address from r4
+            int virtAddr = machine->ReadRegister(4);
+            int maxNameLen = 32;
+            char *filename = machine->User2System(virtAddr, maxNameLen + 1);
 
-			if(exitStatus != 0)
-			{
-				IncreasePC();
-				return;
-				
-			}			
-			
-			int res = pTab->ExitUpdate(exitStatus);
-			//machine->WriteRegister(2, res);
+            if (filename == NULL || strlen(filename) == 0) {
+                DEBUG('a', "\n Unable to read filename.");
+                printf("\n\n Unable to read filename.");
+                machine->WriteRegister(2, -1);
+                AdvancePC();
+                return;
+            }
 
-			currentThread->FreeSpace();
-			currentThread->Finish();
-			IncreasePC();
-			return; 
-				
-		}
-        case SC_CreateSemaphore:
-		{
-			// int CreateSemaphore(char* name, int semval).
-			int virtAddr = machine->ReadRegister(4);
-			int semval = machine->ReadRegister(5);
+            if (!fileSystem->Create(filename, 0)) {
+                DEBUG('a', "\n Failed to create file.");
+                printf("\n\n Failed to create file.");
+                machine->WriteRegister(2, -1);
+            } else
+                machine->WriteRegister(2, 0);
 
-			char *name = User2System(virtAddr, MaxFileLength + 1);
-			if(name == NULL)
-			{
-				DEBUG('a', "\n Not enough memory in System");
-				printf("\n Not enough memory in System");
-				machine->WriteRegister(2, -1);
-				delete[] name;
-				AdvancePC();
-				return;
-			}
-			
-			int res = semTab->Create(name, semval);
+            AdvancePC();
+            delete[] filename;
+        } break;
 
-			if(res == -1)
-			{
-				DEBUG('a', "\n Khong the khoi tao semaphore");
-				printf("\n Khong the khoi tao semaphore");
-				machine->WriteRegister(2, -1);
-				delete[] name;
-				AdvancePC();
-				return;				
-			}
-			
-			delete[] name;
-			machine->WriteRegister(2, res);
-			AdvancePC();
-			return;
-		}
-			
+        case SC_Open: {
+            int virtAddr = machine->ReadRegister(4),
+                type = machine->ReadRegister(5);
+            int maxNameLen = 32;
+            char *filename = machine->User2System(virtAddr, maxNameLen + 1);
+
+            int freeSlot = fileSystem->GetFreeSlot();
+            if (freeSlot == -1) {
+                DEBUG('a', "\n Unable to open file.");
+                printf("\n\n Unable to open file.");
+                machine->WriteRegister(2, -1);
+                AdvancePC();
+                delete[] filename;
+                return;
+            }
+
+            if (type == 0 || type == 1) {
+                if ((fileSystem->openf[freeSlot] =
+                         fileSystem->Open(filename, type)) != NULL)
+                    machine->WriteRegister(2, freeSlot);
+            } else if (type == 2)
+                machine->WriteRegister(2, 0);
+            else
+                machine->WriteRegister(2, 1);
+
+            AdvancePC();
+            delete[] filename;
+        } break;
+
+        case SC_Close: {
+            int fileId = machine->ReadRegister(4);
+            if (fileId < 0 || fileId > 14) {
+                DEBUG('a', "\n Unable to close file.");
+                printf("\n\n Unable to close file.");
+                machine->WriteRegister(2, -1);
+                AdvancePC();
+                return;
+            }
+
+            if (fileSystem->openf[fileId]) {
+                delete fileSystem->openf[fileId];
+                fileSystem->openf[fileId] = NULL;
+                machine->WriteRegister(2, 0);
+            } else
+                machine->WriteRegister(2, -1);
+
+            AdvancePC();
+        } break;
+
+        case SC_Read: {
+            // get buffer address from r4 and charcount from r5, get file id
+            // from r6
+            int virtAddr = machine->ReadRegister(4),
+                charcount = machine->ReadRegister(5);
+            int fileId = machine->ReadRegister(6);
+
+            if (fileId < 0 || fileId > 14 // if the id is outside the file table
+                ||
+                fileSystem->openf[fileId] == NULL // if the file doesn't exist
+                || fileSystem->openf[fileId]->type ==
+                       3) { // if the file is of stdout type
+                DEBUG('a', "\n Unable to read file.");
+                printf("\n\n Unable to read file.");
+                machine->WriteRegister(2, -1);
+                AdvancePC();
+                return;
+            }
+
+            int oldPos = fileSystem->openf[fileId]->GetCurrentPos(), newPos = 0;
+            char *buffer = machine->User2System(virtAddr, charcount);
+
+            if (fileSystem->openf[fileId]->type ==
+                2) { // if the file is of stdin type
+                int size = gSynchConsole->Read(buffer, charcount);
+                machine->System2User(virtAddr, size, buffer);
+                machine->WriteRegister(2, size);
+                AdvancePC();
+                delete[] buffer;
+                return;
+            }
+
+            if (fileSystem->openf[fileId]->Read(buffer, charcount) > 0) {
+                newPos = fileSystem->openf[fileId]->GetCurrentPos();
+                machine->System2User(virtAddr, newPos - oldPos, buffer);
+                machine->WriteRegister(2, newPos - oldPos);
+            } else
+                machine->WriteRegister(2, -2);
+
+            AdvancePC();
+            delete[] buffer;
+        } break;
+
+        case SC_Write: {
+            // get buffer address from r4 and charcount from r5, get file id
+            // from r6
+            int virtAddr = machine->ReadRegister(4),
+                charcount = machine->ReadRegister(5);
+            int fileId = machine->ReadRegister(6);
+
+            if (fileId < 0 || fileId > 14 // if the id is outside the file table
+                ||
+                fileSystem->openf[fileId] == NULL // if the file doesn't exist
+                || fileSystem->openf[fileId]->type ==
+                       1 // if the file is of read-only type
+                || fileSystem->openf[fileId]->type ==
+                       2) { // if the file is of stdin type
+                DEBUG('a', "\n Unable to write to file.");
+                printf("\n\n Unable to write to file.");
+                machine->WriteRegister(2, -1);
+                AdvancePC();
+                return;
+            }
+
+            int oldPos = fileSystem->openf[fileId]->GetCurrentPos(), newPos = 0;
+            char *buffer = machine->User2System(virtAddr, charcount);
+
+            if (fileSystem->openf[fileId]->type ==
+                0) // if the file is of read and write type
+                if (fileSystem->openf[fileId]->Write(buffer, charcount) > 0) {
+                    newPos = fileSystem->openf[fileId]->GetCurrentPos();
+                    machine->WriteRegister(2, newPos - oldPos);
+                    AdvancePC();
+                    delete[] buffer;
+                    return;
+                }
+
+            int i = 0;
+            while (buffer[i] != 0 && buffer[i] != '\n')
+                gSynchConsole->Write(buffer + i++, 1);
+
+            buffer[i] = '\n';
+            gSynchConsole->Write(buffer + i, 1);
+            machine->WriteRegister(2, i - 1);
+            AdvancePC();
+            delete[] buffer;
+        } break;
+
+        case SC_Exec: {
+            // get buffer address from r4
+            int virtAddr = machine->ReadRegister(4);
+            int maxNameLen = 32;
+            char *filename = machine->User2System(virtAddr, maxNameLen + 1);
+
+            if (filename == NULL) {
+                DEBUG('a', "\n Unable to read filename.");
+                printf("\n\n Unable to read filename.");
+                machine->WriteRegister(2, -1);
+                AdvancePC();
+                return;
+            }
+
+            OpenFile *oFile = fileSystem->Open(filename);
+            if (oFile == NULL) {
+                DEBUG('a', "\n Unable to open file.");
+                printf("\n\n Unable to open file.");
+                machine->WriteRegister(2, -1);
+                AdvancePC();
+                delete[] filename;
+                return;
+            }
+            delete oFile; // the whole point of opening the file is to
+                          // check its validity, nothing else
+
+            int id = pTab->ExecUpdate(filename);
+            machine->WriteRegister(2, id);
+            AdvancePC();
+            delete[] filename;
+            return;
+        } break;
+
+        case SC_Join: {
+            // int Join(SpaceId id)
+            // Input: id dia chi cua thread
+            // Output:
+            int id = machine->ReadRegister(4);
+
+            int res = pTab->JoinUpdate(id);
+
+            machine->WriteRegister(2, res);
+            AdvancePC();
+            return;
+        } break;
+
+        case SC_Exit: {
+            // void Exit(int status);
+            // Input: status code
+            int exitStatus = machine->ReadRegister(4);
+
+            if (exitStatus != 0) {
+                AdvancePC();
+                return;
+            }
+
+            int res = pTab->ExitUpdate(exitStatus);
+            machine->WriteRegister(2, res);
+
+            currentThread->FreeSpace();
+            currentThread->Finish();
+            AdvancePC();
+            return;
+        } break;
+
+        case SC_CreateSemaphore: {
+            // int CreateSemaphore(char* name, int semval).
+            int virtAddr = machine->ReadRegister(4);
+            int semval = machine->ReadRegister(5);
+
+            char *name = machine->User2System(virtAddr, MaxFileLength + 1);
+            if (name == NULL) {
+                DEBUG('a', "\n Not enough memory in System");
+                printf("\n Not enough memory in System");
+                machine->WriteRegister(2, -1);
+                delete[] name;
+                AdvancePC();
+                return;
+            }
+
+            int res = semTab->Create(name, semval);
+
+            if (res == -1) {
+                DEBUG('a', "\n Khong the khoi tao semaphore");
+                printf("\n Khong the khoi tao semaphore");
+                machine->WriteRegister(2, -1);
+                delete[] name;
+                AdvancePC();
+                return;
+            }
+
+            delete[] name;
+            machine->WriteRegister(2, res);
+            AdvancePC();
+            return;
+        } break;
+
+        case SC_Wait: {
+            // get buffer address from r4
+            int virtAddr = machine->ReadRegister(4);
+            int maxNameLen = 32;
+            char *filename = machine->User2System(virtAddr, maxNameLen + 1);
+
+            if (filename == NULL) {
+                DEBUG('a', "\n Unable to read filename.");
+                printf("\n\n Unable to read filename.");
+                machine->WriteRegister(2, -1);
+                AdvancePC();
+                return;
+            }
+
+            int status = semTab->Wait(filename);
+            if (status == -1) {
+                DEBUG('a', "\n Semaphore doesn't exist.");
+                printf("\n\n Semaphore doesn't exist.");
+                machine->WriteRegister(2, -1);
+                AdvancePC();
+                delete[] filename;
+                return;
+            }
+            machine->WriteRegister(2, status);
+            AdvancePC();
+            delete[] filename;
+        } break;
+
+        case SC_Signal: {
+            // get buffer address from r4
+            int virtAddr = machine->ReadRegister(4);
+            int maxNameLen = 32;
+            char *filename = machine->User2System(virtAddr, maxNameLen + 1);
+
+            if (filename == NULL) {
+                DEBUG('a', "\n Unable to read filename.");
+                printf("\n\n Unable to read filename.");
+                machine->WriteRegister(2, -1);
+                AdvancePC();
+                return;
+            }
+
+            int status = semTab->Signal(filename);
+            if (status == -1) {
+                DEBUG('a', "\n Semaphore doesn't exist.");
+                printf("\n\n Semaphore doesn't exist.");
+                machine->WriteRegister(2, -1);
+                AdvancePC();
+                delete[] filename;
+                return;
+            }
+            machine->WriteRegister(2, status);
+            AdvancePC();
+            delete[] filename;
+        } break;
+
         default:
             AdvancePC();
             break;
@@ -387,4 +634,3 @@ case SC_Join:
         break;
     }
 }
-

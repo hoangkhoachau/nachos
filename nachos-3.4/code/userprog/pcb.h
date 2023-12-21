@@ -1,52 +1,60 @@
+// pcb.h - Process Control Block
+//	Data structures to keep track of information pertaining to
+//	the management of processes.
+//
+// Copyright (c) 2023 Students of University of Science - VNUHCM.
+// All rights reserved.  See copyright.h for copyright notice and limitation
+// of liability and disclaimer of warranty provisions. All the points stated
+// in the copyright.h of the University of California shall also cover us.
+
 #ifndef PCB_H
 #define PCB_H
 
-#include "thread.h"
+#include "copyright.h"
 #include "synch.h"
+#include "thread.h"
 
-// Process Control Block
-class PCB
-{
-private:
-    Semaphore* joinsem;         // semaphore cho quá trình join
-    Semaphore* exitsem;         // semaphore cho quá trình exit
-    Semaphore* multex;          // semaphore cho quá trình truy xuất đọc quyền  
+class PCB {
+  public:
+    int parentID;      // ID of parent process
+    bool isBackground; // Flag to check if the process is a background one
 
-    int exitcode;		
-    int numwait;                // số tiến trình đã join
+    PCB();
+    PCB(int id = 0); // Constructor
+    ~PCB();          // Destructor
 
-    char FileName[32];          // Ten cua tien trinh
+    int Exec(char *filename,
+             int pid); // Load the program from the file with the
+                       // corresponding name and assign its processID
+                       // as pid. Create a new thread with its name
+                       // taken from the filename and its process from pid
+    int GetID();       // Return processID of the caller process
+    int GetNumWait();  // Return the number of waiting processes
 
-    Thread* thread;             // Tien trinh cua chuong trinh
-public:
-    int parentID;               // ID cua tien trinh cha
-    
-    char boolBG;                // Kiem tra neu la tien trinh nen
-    
-    PCB(int = 0);               // Contructor
-    ~PCB();                     // Destructor
+    void JoinWait();    // 1. The parent process waits for its child to finish
+    void ExitWait();    // 4. The child process finishes
+    void JoinRelease(); // 2. Signal for the parent process to continue
+    void ExitRelease(); // 3. Allow the child process to end
 
-    int Exec(char*,int);        // Tao mot thread moi
-    int GetID();                // Trả về ProcessID của tiến trình gọi thực hiện
-    int GetNumWait();           // Trả về số lượng tiến trình chờ
+    void IncNumWait(); // Increase the number of waiting processes
+    void DecNumWait(); // Decrease the number of waiting processes
 
+    void SetExitCode(int ec); // Set the exitcode of the process
+    int GetExitCode();        // Return exitcode
 
-    void JoinWait();            // 1. Tiến trình cha đợi tiến trình con kết thúc
-                        
-    void ExitWait();             // 4. Tiến trình con kết thúc
+    void SetFileName(char *fn); // Set the name of the process
+    char *GetFileName();        // Return the name of the process
 
-    void JoinRelease();         // 2. Báo cho tiến trình cha thực thi tiếp
-    void ExitRelease();         // 3. Cho phép tiến trình con kết thúc
+  private:
+    Semaphore *joinsem; // Semaphore for joining proccess
+    Semaphore *exitsem; // Semaphore for exiting process
+    Semaphore *multex;  // Semaphore for exclusively accessing process
 
-    void IncNumWait();          // Tăng số tiến trình chờ
-    void DecNumWait();          // Giảm số tiến trình chờ
+    int exitcode;
+    int numwait; // The number of already-joined processes
 
-    void SetExitCode(int);      // Đặt exitcode của tiến trình
-    int GetExitCode();          // Trả về exitcode
-
-    void SetFileName(char*);    // Set ten tien trinh
-    char* GetFileName();        // Tra ve ten tien trinh
-
+    char FileName[32]; // The name of the process
+    Thread *thread;    // The process of the program
 };
 
 #endif // PCB_H

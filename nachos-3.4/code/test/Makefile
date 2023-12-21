@@ -35,7 +35,7 @@ CPP = gcc -E
 INCDIR =-I../userprog -I../threads
 CFLAGS = -G 0 -c $(INCDIR)
 
-all: halt shell matmult sort read_print_int read_print_char read_print_string help ascii bubble
+all: halt shell matmult sort read_print_int read_print_char read_print_string help ascii bubble people taps tapwater
 
 start.o: start.s ../userprog/syscall.h
 	$(CPP) $(CPPFLAGS) start.c > strt.s
@@ -103,3 +103,21 @@ bubble: bubble.o start.o
 	$(LD) $(LDFLAGS) start.o bubble.o -o bubble.coff
 	../bin/coff2noff bubble.coff bubble
 
+
+tapwater.o: tapwater.c
+	$(CC) $(CFLAGS) -c tapwater.c
+tapwater: tapwater.o start.o
+	$(LD) $(LDFLAGS) start.o tapwater.o -o tapwater.coff
+	../bin/coff2noff tapwater.coff tapwater
+
+people.o: people.c
+	$(CC) $(CFLAGS) -c people.c
+people: people.o start.o
+	$(LD) $(LDFLAGS) start.o people.o -o people.coff
+	../bin/coff2noff people.coff people
+
+taps.o: taps.c
+	$(CC) $(CFLAGS) -c taps.c
+taps: taps.o start.o
+	$(LD) $(LDFLAGS) start.o taps.o -o taps.coff
+	../bin/coff2noff taps.coff taps

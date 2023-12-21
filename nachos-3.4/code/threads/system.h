@@ -8,9 +8,12 @@
 #ifndef SYSTEM_H
 #define SYSTEM_H
 
+#include "bitmap.h"
 #include "copyright.h"
 #include "interrupt.h"
+#include "ptable.h"
 #include "scheduler.h"
+#include "stable.h"
 #include "stats.h"
 #include "thread.h"
 #include "timer.h"
@@ -31,9 +34,15 @@ extern Timer *timer;                // the hardware alarm clock
 
 #ifdef USER_PROGRAM
 #include "machine.h"
-#include "synchcons.h"              //LE
-extern Machine *machine;            // user program memory and registers
-extern SynchConsole *gSynchConsole; // LE
+#include "synch.h"
+#include "synchcons.h"
+extern Machine *machine; // user program memory and registers
+extern SynchConsole
+    *gSynchConsole;         // operations to read from and write to the console
+extern Semaphore *addrLock; // semaphore
+extern BitMap *gPhysPageBitMap; // frame-managing bitmap
+extern PTable *pTab;            // process-managing table
+extern STable *semTab;          // semaphore-managing table
 #endif
 
 #ifdef FILESYS_NEEDED // FILESYS or FILESYS_STUB
