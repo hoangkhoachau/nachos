@@ -112,7 +112,7 @@ synchlist.o: ../threads/synchlist.cc /usr/include/stdc-predef.h \
  ../machine/disk.h ../userprog/addrspace.h ../filesys/filesys.h \
  ../filesys/openfile.h
 system.o: ../threads/system.cc /usr/include/stdc-predef.h \
- ../threads/system.h ../threads/copyright.h ../machine/interrupt.h \
+ ../threads/copyright.h ../threads/system.h ../machine/interrupt.h \
  ../threads/copyright.h ../threads/list.h ../threads/utility.h \
  ../threads/bool.h ../machine/sysdep.h /usr/include/stdio.h \
  /usr/include/features.h /usr/include/i386-linux-gnu/sys/cdefs.h \
