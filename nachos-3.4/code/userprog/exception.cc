@@ -27,6 +27,8 @@
 #include <cstring>
 #define MAX_READ_STRING_LENGTH 255
 
+
+#define MaxFileLength 32 // Do dai quy uoc cho file name
 //----------------------------------------------------------------------
 // ExceptionHandler
 // 	Entry point into the Nachos kernel.  Called when a user program
@@ -306,7 +308,8 @@ void ExceptionHandler(ExceptionType which) {
             AdvancePC();
             delete[] buffer;
         } break;
-	case SC_Join:
+
+case SC_Join:
 		{       
 			// int Join(SpaceId id)
 			// Input: id dia chi cua thread
@@ -376,7 +379,6 @@ void ExceptionHandler(ExceptionType which) {
 			return;
 		}
 			
-
         default:
             AdvancePC();
             break;
@@ -385,3 +387,4 @@ void ExceptionHandler(ExceptionType which) {
         break;
     }
 }
+
