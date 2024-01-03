@@ -16,12 +16,12 @@ all:
 	cd filesys; $(MAKE) nachos 
 	cd network; $(MAKE) depend
 	cd network; $(MAKE) nachos 
-	cd bin; make all
-	cd test; make all
+	cd bin; $(MAKE) all
+	cd test; $(MAKE) all
 
 # don't delete executables in "test" in case there is no cross-compiler
 clean:
-	/bin/csh -c "rm -f *~ */{core,nachos,DISK,*.o,swtch.s,*~} test/{*.coff} bin/{coff2flat,coff2noff,disassemble,out}"
+	/bin/sh -c "rm -f *~ */{core,nachos,DISK,*.o,swtch.s,*~} test/{*.coff} bin/{coff2flat,coff2noff,disassemble,out}"
 
 print:
 	/bin/csh -c "$(LPR) Makefile* */Makefile"

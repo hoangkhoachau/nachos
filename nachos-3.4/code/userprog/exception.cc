@@ -181,7 +181,7 @@ void ExceptionHandler(ExceptionType which) {
 
                 machine->WriteRegister(2, 0);
                 AdvancePC();
-                delete buf;
+                delete[] buf;
                 return;
             }
 
@@ -207,7 +207,7 @@ void ExceptionHandler(ExceptionType which) {
                         if (buf[j] != '0') { // Invalid: 1.0002
                             machine->WriteRegister(2, 0);
                             AdvancePC();
-                            delete buf;
+                            delete[] buf;
                             return;
                         }
                     }
@@ -215,7 +215,7 @@ void ExceptionHandler(ExceptionType which) {
                 } else if (buf[i] < '0' || buf[i] > '9') { // Invalid: 12a1
                     machine->WriteRegister(2, 0);
                     AdvancePC();
-                    delete buf;
+                    delete[] buf;
                     return;
                 } else {
                     ans = ans * 10 + (buf[i] - '0');
@@ -225,7 +225,7 @@ void ExceptionHandler(ExceptionType which) {
                         ans = isNegative ? -__INT_MAX__ : __INT_MAX__;
                         machine->WriteRegister(2, ans);
                         AdvancePC();
-                        delete buf;
+                        delete[] buf;
                         return;
                     }
                 }
@@ -236,7 +236,7 @@ void ExceptionHandler(ExceptionType which) {
 
             machine->WriteRegister(2, ans);
             AdvancePC();
-            delete buf;
+            delete[] buf;
             return;
         } break;
 
@@ -337,7 +337,7 @@ void ExceptionHandler(ExceptionType which) {
         } break;
 
         case SC_Open: {
-            int virtAddr = machine->ReadRegister(4),
+             int virtAddr = machine->ReadRegister(4),
                 type = machine->ReadRegister(5);
             int maxNameLen = 32;
             char *filename = machine->User2System(virtAddr, maxNameLen + 1);
@@ -472,6 +472,25 @@ void ExceptionHandler(ExceptionType which) {
             AdvancePC();
             delete[] buffer;
         } break;
+
+        case SC_Seek:
+            {
+                int pos = machine->ReadRegister(4);
+                int id = machine->ReadRegister(5);
+                if (id < 2 || id > 14 || fileSystem->openf[id] == NULL) {
+                    DEBUG('a', "\n Unable to seek file.");
+                    printf("\n\n Unable to seek file.");
+                    machine->WriteRegister(2, -1);
+                    AdvancePC();
+                    return;
+                }
+                pos = pos < 0 ? (pos +1 + fileSystem->openf[id]->Length() ): pos;
+
+                // int res = fileSystem->openf[id]->Seek(pos);
+                fileSystem->openf[id]->Seek(pos);
+                // machine->WriteRegister(2, res);
+                AdvancePC();
+            }break;
 
         case SC_Exec: {
             // get buffer address from r4
